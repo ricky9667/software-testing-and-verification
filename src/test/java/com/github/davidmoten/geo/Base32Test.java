@@ -9,17 +9,22 @@ import static org.junit.Assert.*;
 public class Base32Test {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test
-    public void encodeBase32() throws Exception {
+    public void testEncodeBase32() {
         String encode = Base32.encodeBase32(75324, 4);
         assertEquals("29jw", encode);
     }
 
+    @Test
+    public void testDecodeBase32() {
+        long decode = Base32.decodeBase32("29jw");
+        assertEquals(75324, decode);
+    }
 }
