@@ -8,14 +8,6 @@ import static org.junit.Assert.*;
 
 public class Base32Test {
 
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testEncodeBase32() {
         String encode = Base32.encodeBase32(75324, 4);
