@@ -39,4 +39,28 @@ public class GeoHashTest {
         String hash = GeoHash.adjacentHash("gbsuv", Direction.RIGHT);
         assertEquals("gbsuy", hash);
     }
+
+    @Test
+    public void testTop() {
+        String hash = GeoHash.top("gbsuv");
+        assertEquals("gbsvj", hash);
+    }
+
+    @Test
+    public void testBottom() {
+        String hash = GeoHash.bottom("gbsuv");
+        assertEquals("gbsut", hash);
+    }
+
+    @Test
+    public void testLeft() {
+        String hash = GeoHash.left("gbsuv");
+        assertEquals("gbsuu", hash);
+    }
+
+    @Test
+    public void testRight() {
+        String hash = GeoHash.right("gbsuv");
+        assertEquals("gbsuy", hash);
+    }
 }
