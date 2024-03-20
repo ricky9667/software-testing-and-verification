@@ -109,4 +109,14 @@ public class GeoHashTest {
         int length = GeoHash.hashLengthToCoverBoundingBox(-90, 0, 0, 180);
         assertEquals(0, length);
     }
+
+    @Test
+    public void testHashContains() {
+        assertTrue(GeoHash.hashContains("gbsuv", 48.669, -4.329));
+    }
+
+    @Test
+    public void testHashContainsFail() {
+        assertFalse(GeoHash.hashContains("wsqqq", 48.669, -4.329));
+    }
 }
