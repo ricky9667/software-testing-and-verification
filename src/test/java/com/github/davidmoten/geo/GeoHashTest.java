@@ -98,4 +98,15 @@ public class GeoHashTest {
         assertEquals(-4.329, latLong.getLon(), 0.001);
     }
 
+    @Test
+    public void testHashLengthToCoverBoundingBoxNormal() {
+        int length = GeoHash.hashLengthToCoverBoundingBox(48.1, -4.1, 48.2, -4.2);
+        assertEquals(3, length);
+    }
+
+    @Test
+    public void testHashLengthToCoverBoundingBoxZero() {
+        int length = GeoHash.hashLengthToCoverBoundingBox(-90, 0, 0, 180);
+        assertEquals(0, length);
+    }
 }
