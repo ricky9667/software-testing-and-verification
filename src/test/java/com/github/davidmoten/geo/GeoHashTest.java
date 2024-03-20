@@ -84,4 +84,18 @@ public class GeoHashTest {
         assertTrue(hashes.contains("gbsus"));
         assertTrue(hashes.contains("gbsuw"));
     }
+
+    @Test
+    public void testEncodeHash() {
+        String hash = GeoHash.encodeHash(48.669, -4.329, 5);
+        assertEquals("gbsuv", hash);
+    }
+
+    @Test
+    public void testDecodeHash() {
+        LatLong latLong = GeoHash.decodeHash("gbsuv");
+        assertEquals(48.669, latLong.getLat(), 0.001);
+        assertEquals(-4.329, latLong.getLon(), 0.001);
+    }
+
 }
