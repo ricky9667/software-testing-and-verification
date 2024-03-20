@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class GeoHashTest {
@@ -62,5 +64,24 @@ public class GeoHashTest {
     public void testRight() {
         String hash = GeoHash.right("gbsuv");
         assertEquals("gbsuy", hash);
+    }
+
+    @Test
+    public void testAdjacentHashWithStep() {
+        String hash = GeoHash.adjacentHash("gbsuv", Direction.TOP, 2);
+        assertEquals("gbsvm", hash);
+    }
+
+    @Test
+    public void testNeighbours() {
+        List<String> hashes = GeoHash.neighbours("gbsuv");
+        assertTrue(hashes.contains("gbsvj"));
+        assertTrue(hashes.contains("gbsut"));
+        assertTrue(hashes.contains("gbsuu"));
+        assertTrue(hashes.contains("gbsuy"));
+        assertTrue(hashes.contains("gbsvh"));
+        assertTrue(hashes.contains("gbsvn"));
+        assertTrue(hashes.contains("gbsus"));
+        assertTrue(hashes.contains("gbsuw"));
     }
 }
