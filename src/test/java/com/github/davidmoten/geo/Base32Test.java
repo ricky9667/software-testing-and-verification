@@ -61,4 +61,16 @@ public class Base32Test {
         long decode = Base32.decodeBase32("-0001");
         assertEquals(-1, decode);
     }
+
+
+    @Test
+    public void testGetCharIndexSuccess() {
+        assertEquals(0, Base32.getCharIndex('0'));
+        assertEquals(10, Base32.getCharIndex('b'));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetCharIndexCharNotExist() {
+        Base32.getCharIndex('a');
+    }
 }
