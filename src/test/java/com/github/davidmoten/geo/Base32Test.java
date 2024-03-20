@@ -73,4 +73,17 @@ public class Base32Test {
     public void testGetCharIndexCharNotExist() {
         Base32.getCharIndex('a');
     }
+
+
+    @Test
+    public void testPadLeftWithZerosToLength() {
+        String s = Base32.padLeftWithZerosToLength("aaa", 10);
+        assertEquals("0000000aaa", s);
+    }
+
+    @Test
+    public void testPadLeftWithZerosToLengthIgnore() {
+        String s = Base32.padLeftWithZerosToLength("aaa", 3);
+        assertEquals("aaa", s);
+    }
 }
