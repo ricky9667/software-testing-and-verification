@@ -1,5 +1,6 @@
 package com.github.davidmoten.geo;
 
+import com.google.common.collect.Sets;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -118,5 +119,27 @@ public class GeoHashTest {
     @Test
     public void testHashContainsFail() {
         assertFalse(GeoHash.hashContains("wsqqq", 48.669, -4.329));
+    }
+
+    @Test
+    public void testCoverBoundingBox() {
+        Coverage coverage = GeoHash.coverBoundingBox(48.2, -4.2, 48.1, -4.1, 3);
+        assertEquals(1, coverage.getHashes().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCoverBoundingBoxFail() {
+        GeoHash.coverBoundingBox(48.1, -4.1, 48.2, -4.2, 3);
+    }
+
+    @Test
+    public void testHeightDegrees() {
+        assertEquals(45.0, GeoHash.heightDegrees(1), 0.001);
+    }
+
+    @Test
+    public void testHeightDegreesOverHashLength() {
+        double expected = 1.3096 * Math.pow(10, -9);
+        assertEquals(expected, GeoHash.heightDegrees(15), 0.001);
     }
 }
