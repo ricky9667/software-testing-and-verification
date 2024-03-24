@@ -10,15 +10,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class GeoHashTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testAdjacentHashTop() {
         String hash = GeoHash.adjacentHash("gbsuv", Direction.TOP);
