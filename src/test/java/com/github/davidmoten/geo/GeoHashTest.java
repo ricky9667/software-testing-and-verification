@@ -1,10 +1,8 @@
 package com.github.davidmoten.geo;
 
-import com.google.common.collect.Sets;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -143,5 +141,23 @@ public class GeoHashTest {
     public void testWidthDegreesOverHashLength() {
         double expected = 1.3096 * Math.pow(10, -9);
         assertEquals(expected, GeoHash.widthDegrees(15), 0.001);
+    }
+
+    @Test
+    public void testGridAsStringWithSize() {
+        String grid = GeoHash.gridAsString("dr", 1, Collections.<String>emptySet());
+        assertEquals("f0 f2 f8 \ndp dr dx \ndn dq dw \n", grid);
+    }
+
+    @Test
+    public void testGridAsStringWithDimensions() {
+        String grid = GeoHash.gridAsString("dr", -1, -1, 1, 1);
+        assertEquals("f0 f2 f8 \ndp dr dx \ndn dq dw \n", grid);
+    }
+
+    @Test
+    public void testGridAsStringWithDimensionsAndHighlights() {
+        String grid = GeoHash.gridAsString("dr", -1, -1, 1, 1, Collections.<String>emptySet());
+        assertEquals("f0 f2 f8 \ndp dr dx \ndn dq dw \n", grid);
     }
 }
