@@ -133,4 +133,15 @@ public class GeoHashTest {
         double expected = 1.3096 * Math.pow(10, -9);
         assertEquals(expected, GeoHash.heightDegrees(15), 0.001);
     }
+
+    @Test
+    public void testWidthDegrees() {
+        assertEquals(45.0, GeoHash.widthDegrees(1), 0.001);
+    }
+
+    @Test
+    public void testWidthDegreesOverHashLength() {
+        double expected = 1.3096 * Math.pow(10, -9);
+        assertEquals(expected, GeoHash.widthDegrees(15), 0.001);
+    }
 }
