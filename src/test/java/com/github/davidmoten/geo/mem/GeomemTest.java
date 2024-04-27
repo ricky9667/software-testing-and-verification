@@ -53,8 +53,10 @@ public class GeomemTest {
     @Test
     public void testCreateRegionFilterWithInfoNotInPredicate() {
         Predicate<Info<String, String>> predicate = geomem.createRegionFilter(50.0, -70.0, 40.0, -50.0);
-        Info<String, String> info = new Info<String, String>(70.0, -60.0, 1708757706, "test", Optional.of("test"));
+        Info<String, String> failInfo1 = new Info<String, String>(70.0, -60.0, 1708757706, "test", Optional.of("test"));
+        Info<String, String> failInfo2 = new Info<String, String>(45.0, 30.0, 1708757706, "test", Optional.of("test"));
 
-        assertFalse(predicate.apply(info));
+        assertFalse(predicate.apply(failInfo1));
+        assertFalse(predicate.apply(failInfo2));
     }
 }
