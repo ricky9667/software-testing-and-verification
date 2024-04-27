@@ -59,4 +59,61 @@ public class GeomemTest {
         assertFalse(predicate.apply(failInfo1));
         assertFalse(predicate.apply(failInfo2));
     }
+
+    @Test
+    public void testAddWithParametersWithoutId() {
+        geomem.add(45.0, -60.0, 1708757706, "test");
+        Iterable<Info<String, String>> infos = geomem.find(50.0, -70.0, 40.0, -50.0, 0, Long.MAX_VALUE);
+
+        assertTrue(infos.iterator().hasNext());
+        Info<String, String> info = infos.iterator().next();
+
+        assertEquals(45.0, info.lat(), 0);
+        assertEquals(-60.0, info.lon(), 0);
+        assertEquals(1708757706, info.time());
+        assertEquals("test", info.value());
+        assertEquals("test", info.id().get());
+    }
+
+    @Test
+    public void testAddWithParametersWithId() {
+        geomem.add(45.0, -60.0, 1708757706, "test", "testId");
+        Iterable<Info<String, String>> infos = geomem.find(50.0, -70.0, 40.0, -50.0, 0, Long.MAX_VALUE);
+
+        assertTrue(infos.iterator().hasNext());
+        Info<String, String> info = infos.iterator().next();
+
+        assertEquals(45.0, info.lat(), 0);
+        assertEquals(-60.0, info.lon(), 0);
+        assertEquals(1708757706, info.time());
+        assertEquals("test", info.value());
+        assertEquals("testId", info.id().get());
+    }
+
+    @Test
+    public void testAddWithParametersWithOptionId() {
+        geomem.add(45.0, -60.0, 1708757706, "test", Optional.of("testId"));
+        Iterable<Info<String, String>> infos = geomem.find(50.0, -70.0, 40.0, -50.0, 0, Long.MAX_VALUE);
+
+        assertTrue(infos.iterator().hasNext());
+        Info<String, String> info = infos.iterator().next();
+
+        assertEquals(45.0, info.lat(), 0);
+        assertEquals(-60.0, info.lon(), 0);
+        assertEquals(1708757706, info.time());
+        assertEquals("test", info.value());
+        assertEquals("testId", info.id().get());
+    }
+
+    @Test
+    public void testAddWithInfo() {
+        Info<String, String> expectedInfo = new Info<String, String>(45.0, -60.0, 1708757706, "test", Optional.of("testId"));
+        geomem.add(expectedInfo);
+        Iterable<Info<String, String>> infos = geomem.find(50.0, -70.0, 40.0, -50.0, 0, Long.MAX_VALUE);
+
+        assertTrue(infos.iterator().hasNext());
+        Info<String, String> actualInfo = infos.iterator().next();
+
+        assertEquals(expectedInfo, actualInfo);
+    }
 }
