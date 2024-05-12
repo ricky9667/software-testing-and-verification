@@ -108,7 +108,7 @@ class KeystonePostTest(unittest.TestCase):
 
         self.assertEqual('My first post', created_post_name_button.text)
 
-    def test_3_search_posts(self):
+    def test_3_search_posts_fail(self):
         print('\n[Test] Search posts fail by keyword on the Admin UI page')
 
         self.go_to_posts_page()
