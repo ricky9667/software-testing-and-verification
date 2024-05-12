@@ -139,7 +139,51 @@ class KeystoneCommentsTest(unittest.TestCase):
             By.TAG_NAME, "a")
         self.assertEqual("My first post", post_table_item.text)
 
-    def test_2_delete_comment(self):
+    def test_2_edit_comment(self):
+        print('\n[Test] Edit a comment on Admin UI page')
+
+        self.go_to_posts_comments_page()
+
+        time.sleep(2)
+
+        # Post comments page
+        post_comments_item_list_wrapper = self.driver.find_element(
+            By.XPATH, "//div[@class='ItemList-wrapper']")
+        post_comment_state_item = post_comments_item_list_wrapper.find_elements(
+            By.TAG_NAME, "td")[1]
+        post_comment_state_item = post_comment_state_item.find_element(
+            By.TAG_NAME, "a")
+        post_comment_state_item.click()
+
+        time.sleep(2)
+
+        textfield_arrows = self.driver.find_elements(
+            By.XPATH, "//span[@class='Select-arrow']")
+        comment_state_arrow = textfield_arrows[2]
+        comment_state_arrow.click()
+
+        draft_state_item = self.driver.find_element(
+            By.XPATH, "//div[text()='Draft']")
+        draft_state_item.click()
+
+        save_button = self.driver.find_element(
+            By.XPATH, "//button[@type='button' and @class='css-2960tt']")
+        save_button.click()
+
+        self.driver.back()
+
+        time.sleep(2)
+
+        # Post comments page
+        post_comments_item_list_wrapper = self.driver.find_element(
+            By.XPATH, "//div[@class='ItemList-wrapper']")
+        post_comment_state_item_td = post_comments_item_list_wrapper.find_elements(
+            By.TAG_NAME, "td")[5]
+        post_comment_state_item = post_comment_state_item_td.find_element(
+            By.TAG_NAME, "div")
+        self.assertEqual("Draft", post_comment_state_item.text)
+
+    def test_3_delete_comment(self):
         print('\n[Test] Delete a comment on Admin UI page')
 
         self.go_to_posts_comments_page()
