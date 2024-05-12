@@ -109,7 +109,27 @@ class KeystonePostTest(unittest.TestCase):
 
         self.assertEqual('My first post', created_post_name_button.text)
 
-    def test_3_edit_post(self):
+    def test_3_search_posts(self):
+        print('\n[Test] Search posts fail by keyword on the Admin UI page')
+
+        self.go_to_posts_page()
+
+        # Posts page
+        search_textfield = self.driver.find_element(
+            By.XPATH, "//input[@type='text' and @placeholder='Search']")
+        search_textfield.send_keys('second')
+
+        time.sleep(2)
+
+        no_posts_found_section = self.driver.find_element(
+            By.XPATH, "//div[@class='css-l1jroy']")
+        no_posts_found_text = no_posts_found_section.find_element(
+            By.TAG_NAME, "h2")
+
+        self.assertEqual('No posts found matching second',
+                         no_posts_found_text.text)
+
+    def test_4_edit_post(self):
         print('\n[Test] Edit a post on the Admin UI page')
 
         self.go_to_posts_page()
@@ -164,7 +184,7 @@ class KeystonePostTest(unittest.TestCase):
 
         self.assertEqual("Published", created_post_state_text.text)
 
-    def test_4_delete_post(self):
+    def test_5_delete_post(self):
         print('\n[Test] Delete a post on the Admin UI page')
 
         self.go_to_posts_page()
