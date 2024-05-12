@@ -7,51 +7,83 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 class KeystoneCommentsTest(unittest.TestCase):
-    def setUp(self):
-        self.base_url = 'http://127.0.0.1:3000'
-        self.admin_ui_url = self.base_url + '/keystone'
-        self.post_comments_url = self.base_url + '/keystone/post-comments'
+    @classmethod
+    def setUpClass(cls):
+        cls.base_url = 'http://127.0.0.1:3000'
+        cls.admin_ui_url = cls.base_url + '/keystone'
+        cls.posts_url = cls.base_url + '/keystone/posts'
+        cls.post_comments_url = cls.base_url + '/keystone/post-comments'
 
-        self.driver = webdriver.Chrome()
+        cls.driver = webdriver.Chrome()
+        cls.sign_in()
+        cls.create_post()
 
-        self.sign_in()
+    @classmethod
+    def tearDownClass(cls):
+        cls.delete_post()
 
-        self.post_name = 'My first post'
-        self.create_post(self.post_name)
+        if cls.driver:
+            cls.driver.quit()
 
-    def tearDown(self):
-        self.delete_post()
-
-        if self.driver:
-            self.driver.quit()
-
-    def sign_in(self):
-        self.driver.get(self.base_url + '/keystone/signIn')
+    @classmethod
+    def sign_in(cls):
+        cls.driver.get(cls.base_url + '/keystone/signIn')
         email = 'demo@keystonejs.com'
         password = 'demo'
 
-        email_textfield = self.driver.find_element(
+        email_textfield = cls.driver.find_element(
             By.XPATH, "//input[@type='email' and @name='email']")
         email_textfield.send_keys(email)
 
-        password_textfield = self.driver.find_element(
+        password_textfield = cls.driver.find_element(
             By.XPATH, "//input[@type='password' and @name='password']")
         password_textfield.send_keys(password)
 
-        sign_in_button = self.driver.find_element(
+        sign_in_button = cls.driver.find_element(
             By.XPATH, "//button[@type='submit']")
         sign_in_button.click()
 
         time.sleep(2)
 
-    def go_to_posts_page(self):
-        self.driver.get(self.admin_ui_url)
+    @classmethod
+    def create_post(cls):
+        cls.driver.get(cls.posts_url)
+
         time.sleep(2)
 
-        # Admin UI page
-        posts_page_button = self.driver.find_element(
-            By.XPATH, "//a[@href='/keystone/posts']")
-        posts_page_button.click()
+        # Posts page
+        create_post_button = cls.driver.find_element(
+            By.XPATH, "//button[@type='button']")
+        create_post_button.click()
+
+        # Show title textfield popup
+        title_textfield = cls.driver.find_element(
+            By.XPATH, "//input[@type='text' and @name='name']")
+        title_textfield.send_keys("My first post")
+
+        create_post_button = cls.driver.find_element(
+            By.XPATH, "//button[@type='submit']")
+        create_post_button.click()
+
+        time.sleep(2)
+
+    @classmethod
+    def delete_post(cls):
+        cls.driver.get(cls.posts_url)
+
+        time.sleep(2)
+
+        # Posts page
+        created_post_delete_button = cls.driver.find_element(
+            By.XPATH, "//span[@class='octicon octicon-trashcan']")
+        created_post_delete_button.click()
+
+        time.sleep(2)
+
+        # Show delete popup
+        popup_post_delete_button = cls.driver.find_element(
+            By.XPATH, "//button[@type='button' and @data-button-type='confirm']")
+        popup_post_delete_button.click()
 
         time.sleep(2)
 
@@ -59,43 +91,7 @@ class KeystoneCommentsTest(unittest.TestCase):
         self.driver.get(self.admin_ui_url + '/post-comments')
         time.sleep(2)
 
-    def create_post(self, post_name):
-        self.go_to_posts_page()
-
-        # Posts page
-        create_post_button = self.driver.find_element(
-            By.XPATH, "//button[@type='button']")
-        create_post_button.click()
-
-        # Show title textfield popup
-        title_textfield = self.driver.find_element(
-            By.XPATH, "//input[@type='text' and @name='name']")
-        title_textfield.send_keys(post_name)
-
-        create_post_button = self.driver.find_element(
-            By.XPATH, "//button[@type='submit']")
-        create_post_button.click()
-
-        time.sleep(2)
-
-    def delete_post(self):
-        self.go_to_posts_page()
-
-        # Posts page
-        created_post_delete_button = self.driver.find_element(
-            By.XPATH, "//span[@class='octicon octicon-trashcan']")
-        created_post_delete_button.click()
-
-        time.sleep(2)
-
-        # Show delete popup
-        popup_post_delete_button = self.driver.find_element(
-            By.XPATH, "//button[@type='button' and @data-button-type='confirm']")
-        popup_post_delete_button.click()
-
-        time.sleep(2)
-
-    def test_create_comment(self):
+    def test_1_create_comment(self):
         print('\n[Test] Create a comment on Admin UI page')
 
         self.go_to_posts_comments_page()
@@ -141,7 +137,24 @@ class KeystoneCommentsTest(unittest.TestCase):
 
         post_table_item = post_comments_td_elements[3].find_element(
             By.TAG_NAME, "a")
-        self.assertEqual(self.post_name, post_table_item.text)
+        self.assertEqual("My first post", post_table_item.text)
+
+    def test_2_delete_comment(self):
+        print('\n[Test] Delete a comment on Admin UI page')
+
+        self.go_to_posts_comments_page()
+
+        # Post comments page
+        created_post_delete_button = self.driver.find_element(
+            By.XPATH, "//span[@class='octicon octicon-trashcan']")
+        created_post_delete_button.click()
+
+        time.sleep(2)
+
+        # Show delete popup
+        popup_comment_delete_button = self.driver.find_element(
+            By.XPATH, "//button[@type='button' and @data-button-type='confirm']")
+        popup_comment_delete_button.click()
 
 
 if __name__ == '__main__':
