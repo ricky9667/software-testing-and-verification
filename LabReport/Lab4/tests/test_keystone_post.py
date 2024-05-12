@@ -5,32 +5,34 @@ from selenium.webdriver.common.by import By
 
 
 class KeystonePostTest(unittest.TestCase):
-    def setUp(self):
-        self.base_url = 'http://127.0.0.1:3000'
-        self.admin_ui_url = self.base_url + '/keystone'
-        self.driver = webdriver.Chrome()
+    @classmethod
+    def setUpClass(cls):
+        cls.base_url = 'http://127.0.0.1:3000'
+        cls.admin_ui_url = cls.base_url + '/keystone'
 
-        self.sign_in()
+        cls.driver = webdriver.Chrome()
+        cls.sign_in()
 
-    def tearDown(self):
-        time.sleep(2)
-        if self.driver:
-            self.driver.quit()
+    @classmethod
+    def tearDownClass(cls):
+        if cls.driver:
+            cls.driver.quit()
 
-    def sign_in(self):
-        self.driver.get(self.base_url + '/keystone/signIn')
+    @classmethod
+    def sign_in(cls):
+        cls.driver.get(cls.base_url + '/keystone/signIn')
         email = 'demo@keystonejs.com'
         password = 'demo'
 
-        email_textfield = self.driver.find_element(
+        email_textfield = cls.driver.find_element(
             By.XPATH, "//input[@type='email' and @name='email']")
         email_textfield.send_keys(email)
 
-        password_textfield = self.driver.find_element(
+        password_textfield = cls.driver.find_element(
             By.XPATH, "//input[@type='password' and @name='password']")
         password_textfield.send_keys(password)
 
-        sign_in_button = self.driver.find_element(
+        sign_in_button = cls.driver.find_element(
             By.XPATH, "//button[@type='submit']")
         sign_in_button.click()
 
