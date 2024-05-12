@@ -1,0 +1,5 @@
+BASE_URL = 'http://127.0.0.1:3000'
+SIGN_IN_URL = f'{BASE_URL}/keystone/signIn'
+ADMIN_UI_URL = f'{BASE_URL}/keystone'
+POSTS_URL = f'{BASE_URL}/keystone/posts'
+POST_COMMENTS_URL = f'{BASE_URL}/keystone/post-comments'

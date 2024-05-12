@@ -5,15 +5,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
+from consts import SIGN_IN_URL, POSTS_URL, POST_COMMENTS_URL
+
 
 class KeystoneCommentsTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.base_url = 'http://127.0.0.1:3000'
-        cls.admin_ui_url = cls.base_url + '/keystone'
-        cls.posts_url = cls.base_url + '/keystone/posts'
-        cls.post_comments_url = cls.base_url + '/keystone/post-comments'
-
         cls.driver = webdriver.Chrome()
         cls.sign_in()
         cls.create_post()
@@ -27,7 +24,7 @@ class KeystoneCommentsTest(unittest.TestCase):
 
     @classmethod
     def sign_in(cls):
-        cls.driver.get(cls.base_url + '/keystone/signIn')
+        cls.driver.get(SIGN_IN_URL)
         email = 'demo@keystonejs.com'
         password = 'demo'
 
@@ -47,7 +44,7 @@ class KeystoneCommentsTest(unittest.TestCase):
 
     @classmethod
     def create_post(cls):
-        cls.driver.get(cls.posts_url)
+        cls.driver.get(POSTS_URL)
 
         time.sleep(2)
 
@@ -69,7 +66,7 @@ class KeystoneCommentsTest(unittest.TestCase):
 
     @classmethod
     def delete_post(cls):
-        cls.driver.get(cls.posts_url)
+        cls.driver.get(POSTS_URL)
 
         time.sleep(2)
 
@@ -87,15 +84,10 @@ class KeystoneCommentsTest(unittest.TestCase):
 
         time.sleep(2)
 
-    def go_to_posts_comments_page(self):
-        self.driver.get(self.admin_ui_url + '/post-comments')
-        time.sleep(2)
-
     def test_1_create_comment(self):
         print('\n[Test] Create a comment on Admin UI page')
 
-        self.go_to_posts_comments_page()
-
+        self.driver.get(POST_COMMENTS_URL)
         time.sleep(2)
 
         # Post comments page
@@ -121,8 +113,7 @@ class KeystoneCommentsTest(unittest.TestCase):
         actions.send_keys(Keys.ENTER)  # Click create button
         actions.perform()
 
-        self.driver.get(self.post_comments_url)
-
+        self.driver.get(POST_COMMENTS_URL)
         time.sleep(2)
 
         # Post comments page
@@ -142,8 +133,7 @@ class KeystoneCommentsTest(unittest.TestCase):
     def test_2_edit_comment(self):
         print('\n[Test] Edit a comment on Admin UI page')
 
-        self.go_to_posts_comments_page()
-
+        self.driver.get(POST_COMMENTS_URL)
         time.sleep(2)
 
         # Post comments page
@@ -171,7 +161,6 @@ class KeystoneCommentsTest(unittest.TestCase):
         save_button.click()
 
         self.driver.back()
-
         time.sleep(2)
 
         # Post comments page
@@ -186,7 +175,8 @@ class KeystoneCommentsTest(unittest.TestCase):
     def test_3_delete_comment(self):
         print('\n[Test] Delete a comment on Admin UI page')
 
-        self.go_to_posts_comments_page()
+        self.driver.get(POST_COMMENTS_URL)
+        time.sleep(2)
 
         # Post comments page
         created_post_delete_button = self.driver.find_element(

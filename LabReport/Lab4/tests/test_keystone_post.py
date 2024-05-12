@@ -3,13 +3,12 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+from consts import SIGN_IN_URL, ADMIN_UI_URL
+
 
 class KeystonePostTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.base_url = 'http://127.0.0.1:3000'
-        cls.admin_ui_url = cls.base_url + '/keystone'
-
         cls.driver = webdriver.Chrome()
         cls.sign_in()
 
@@ -20,7 +19,7 @@ class KeystonePostTest(unittest.TestCase):
 
     @classmethod
     def sign_in(cls):
-        cls.driver.get(cls.base_url + '/keystone/signIn')
+        cls.driver.get(SIGN_IN_URL)
         email = 'demo@keystonejs.com'
         password = 'demo'
 
@@ -39,7 +38,7 @@ class KeystonePostTest(unittest.TestCase):
         time.sleep(2)
 
     def go_to_posts_page(self):
-        self.driver.get(self.admin_ui_url)
+        self.driver.get(ADMIN_UI_URL)
         time.sleep(2)
 
         # Admin UI page
